@@ -100,12 +100,12 @@ int iar_fputc(int ch);
 /** @defgroup STM32WBXX_NUCLEO_LOW_LEVEL_Private_Variables Private Variables
   * @{
   */ 
-GPIO_TypeDef* GPIO_PORT[LEDn] = {LED1_GPIO_PORT, LED2_GPIO_PORT, LED3_GPIO_PORT};
-const uint16_t GPIO_PIN[LEDn] = {LED1_PIN, LED2_PIN, LED3_PIN};
+GPIO_TypeDef* GPIO_PORT[LEDn] = {LED1_GPIO_PORT, LED2_GPIO_PORT};
+const uint16_t GPIO_PIN[LEDn] = {LED1_PIN, LED2_PIN};
 
-GPIO_TypeDef* BUTTON_PORT[BUTTONn] = {BUTTON_SW1_GPIO_PORT, BUTTON_SW2_GPIO_PORT, BUTTON_SW3_GPIO_PORT}; 
-const uint16_t BUTTON_PIN[BUTTONn] = {BUTTON_SW1_PIN, BUTTON_SW2_PIN, BUTTON_SW3_PIN}; 
-const uint8_t BUTTON_IRQn[BUTTONn] = {BUTTON_SW1_EXTI_IRQn, BUTTON_SW2_EXTI_IRQn, BUTTON_SW3_EXTI_IRQn};
+GPIO_TypeDef* BUTTON_PORT[BUTTONn] = {BUTTON_SW1_GPIO_PORT};
+const uint16_t BUTTON_PIN[BUTTONn] = {BUTTON_SW1_PIN};
+const uint8_t BUTTON_IRQn[BUTTONn] = {BUTTON_SW1_EXTI_IRQn};
 
 /**
  * @brief BUS variables
@@ -205,8 +205,10 @@ void BSP_LED_Init(Led_TypeDef Led)
   GPIO_InitTypeDef  gpioinitstruct = {0};
   
   /* Enable the GPIO_LED Clock */
-  LEDx_GPIO_CLK_ENABLE(Led);
-
+  //LEDx_GPIO_CLK_ENABLE(Led);
+  LED1_GPIO_CLK_ENABLE();
+  LED2_GPIO_CLK_ENABLE();
+  
   /* Configure the GPIO_LED pin */
   gpioinitstruct.Pin = GPIO_PIN[Led];
   gpioinitstruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -308,7 +310,8 @@ void BSP_PB_Init(Button_TypeDef Button, ButtonMode_TypeDef ButtonMode)
   GPIO_InitTypeDef gpioinitstruct = {0};
   
   /* Enable the BUTTON Clock */
-  BUTTONx_GPIO_CLK_ENABLE(Button);
+  //BUTTONx_GPIO_CLK_ENABLE(Button);
+  BUTTON_SW1_GPIO_CLK_ENABLE();
   
   if(ButtonMode == BUTTON_MODE_GPIO)
   {
@@ -327,8 +330,8 @@ void BSP_PB_Init(Button_TypeDef Button, ButtonMode_TypeDef ButtonMode)
   {
     /* Configure Button pin as input with External interrupt */
     gpioinitstruct.Pin = BUTTON_PIN[Button];
-    gpioinitstruct.Pull = GPIO_PULLUP;
-    gpioinitstruct.Mode = GPIO_MODE_IT_FALLING; 
+    gpioinitstruct.Pull = GPIO_PULLDOWN;
+    gpioinitstruct.Mode = GPIO_MODE_IT_RISING;
     HAL_GPIO_Init(BUTTON_PORT[Button], &gpioinitstruct);
     
     /* Enable and set Button EXTI Interrupt to the lowest priority */

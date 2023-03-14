@@ -540,9 +540,10 @@ static void Led_Init( void )
 
   BSP_LED_Init(LED_BLUE);
   BSP_LED_Init(LED_GREEN);
-  BSP_LED_Init(LED_RED);
+  //BSP_LED_Init(LED_RED);
 
-  BSP_LED_On(LED_GREEN);
+  //BSP_LED_On(LED_BLUE);
+  //BSP_LED_On(LED_GREEN);
 #endif
 
   return;
@@ -556,8 +557,8 @@ static void Button_Init( void )
    */
 
   BSP_PB_Init(BUTTON_SW1, BUTTON_MODE_EXTI);
-  BSP_PB_Init(BUTTON_SW2, BUTTON_MODE_EXTI);
-  BSP_PB_Init(BUTTON_SW3, BUTTON_MODE_EXTI);
+  //BSP_PB_Init(BUTTON_SW2, BUTTON_MODE_EXTI);
+  //BSP_PB_Init(BUTTON_SW3, BUTTON_MODE_EXTI);
 #endif
 
   return;
@@ -657,7 +658,7 @@ void HAL_GPIO_EXTI_Callback( uint16_t GPIO_Pin )
     case BUTTON_SW1_PIN:
      APP_BLE_Key_Button1_Action();
       break; 
-
+#if(0)
     case BUTTON_SW2_PIN:
       APP_BLE_Key_Button2_Action();
       break; 
@@ -665,7 +666,7 @@ void HAL_GPIO_EXTI_Callback( uint16_t GPIO_Pin )
     case BUTTON_SW3_PIN:
       APP_BLE_Key_Button3_Action();
       break;
-
+#endif
     default:
       break;
 
