@@ -239,8 +239,9 @@ void APP_BLE_Init(void)
   }
   else if (CFG_BEACON_TYPE & CFG_IBEACON)
   {
-    APP_DBG_MSG("Ibeacon advertise\n\r");
-    IBeacon_Process();
+    // RJS, 230315, -2 - Now we start this via button press
+	//APP_DBG_MSG("Ibeacon advertise\n\r");
+    //IBeacon_Process();
   }
   /* USER CODE BEGIN APP_BLE_Init_2 */
 
@@ -331,6 +332,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *p_Pckt)
   return (SVCCTL_UserEvtFlowEnable);
 }
 
+#if(0)
 /* USER CODE BEGIN FD*/
 void APP_BLE_Key_Button1_Action(void)
 {
@@ -346,7 +348,7 @@ void APP_BLE_Key_Button3_Action(void)
 {
   
 }
-
+#endif
 /* USER CODE END FD*/
 
 /*************************************************************

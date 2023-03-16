@@ -49,9 +49,9 @@ extern "C"
 /* Exported constants --------------------------------------------------------*/
 #define ADVERTISING_INTERVAL_IN_MS                                        (1000)
 #define CALIBRATED_TX_POWER_AT_1_M                             ((uint8_t) (-63))
-#define UUID                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-#define MAJOR_ID                                                            0, 1
-#define MINOR_ID                                                            0, 1
+#define UUID                0x57,0x54,0x44,0x30,0x30,0x31,0x36,0x38,0x42,0x55,0x54,0x54,0x4F,0x4E,0x52,0x44
+#define MAJOR_ID                                                            0x5A, 0x5C
+#define MINOR_ID                                                            0x41, 0x41
 
 #if ((ADVERTISING_INTERVAL_IN_MS <= 0) || (ADVERTISING_INTERVAL_IN_MS > 40959))
   #error "Invalid advertising interval! Please select a value between 0 and 40959 ms."

@@ -72,6 +72,8 @@ static uint8_t aRxBuffer[RX_BUFFER_SIZE];
 static uint8_t CommandString[C_SIZE_CMD_STRING];
 static uint16_t indexReceiveChar = 0;
 
+uint8_t appButtonFlag = 0;
+
 /* USER CODE END PV */
 
 /* Private functions prototypes-----------------------------------------------*/
@@ -93,6 +95,7 @@ static void Init_Rtc(void);
 /* USER CODE BEGIN PFP */
 static void Led_Init( void );
 static void Button_Init( void );
+void appTickTime (void);
 
 /* Section specific to button management using UART */
 static void RxUART_Init(void);
@@ -144,6 +147,9 @@ void MX_APPE_Init(void)
   Button_Init();
   
   RxUART_Init();
+
+  UTIL_SEQ_RegTask(1<< CFG_TASK_TICK_TIME_ID, UTIL_SEQ_RFU, appTickTime);
+
 
 /* USER CODE END APPE_Init_1 */
   appe_Tl_Init();	/* Initialize all transport layers */
@@ -599,6 +605,55 @@ void HAL_Delay(uint32_t Delay)
   }
 }
 
+
+void HAL_IncTick(void)
+{
+  uwTick += (uint32_t)uwTickFreq;
+  UTIL_SEQ_SetTask(1<<CFG_TASK_TICK_TIME_ID, CFG_SCH_PRIO_0);
+}
+
+
+void appTickTime (void)
+{
+	// 1ms sequencer triggered "task"
+
+	static uint8_t fpFlag = 1;
+	static uint32_t cnt;
+
+	if (appButtonFlag == 1)
+	{
+		// button event active
+
+		if (fpFlag == 1)
+		{
+			fpFlag = 0;
+			cnt = 0;
+			// first pass logic - start sending beacon data
+			IBeacon_Process();
+
+		}
+
+		if (cnt > (15 * 1000))
+		{
+			// turn off beacon, and reset button logic
+
+			appButtonFlag = 0;
+			fpFlag = 1;
+			aci_gap_set_non_discoverable();
+
+
+
+		}
+		cnt++;
+	}
+
+
+
+
+
+
+}
+
 void MX_APPE_Process(void)
 {
   /* USER CODE BEGIN MX_APPE_Process_1 */
@@ -656,8 +711,12 @@ void HAL_GPIO_EXTI_Callback( uint16_t GPIO_Pin )
   switch (GPIO_Pin)
   {
     case BUTTON_SW1_PIN:
-     APP_BLE_Key_Button1_Action();
-      break; 
+     //APP_BLE_Key_Button1_Action();
+    	// mark 1st button press
+    	if (appButtonFlag == 0)
+    	  appButtonFlag = 1;
+
+    	break;
 #if(0)
     case BUTTON_SW2_PIN:
       APP_BLE_Key_Button2_Action();
