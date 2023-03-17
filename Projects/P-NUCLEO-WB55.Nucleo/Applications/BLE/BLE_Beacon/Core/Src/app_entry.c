@@ -146,6 +146,7 @@ void MX_APPE_Init(void)
 
   Button_Init();
   
+  //RJS, 230317, -1
   RxUART_Init();
 
   UTIL_SEQ_RegTask(1<< CFG_TASK_TICK_TIME_ID, UTIL_SEQ_RFU, appTickTime);
@@ -668,7 +669,8 @@ void MX_APPE_Process(void)
 void UTIL_SEQ_Idle(void)
 {
 #if (CFG_LPM_SUPPORTED == 1)
-  UTIL_LPM_EnterLowPower();
+	if (appButtonFlag == 0)
+		UTIL_LPM_EnterLowPower();
 #endif /* CFG_LPM_SUPPORTED == 1 */
   return;
 }
