@@ -317,7 +317,7 @@ void PUSH_BUTTON_SW1_EXTI_IRQHandler(void)
  */
 void PUSH_BUTTON_SW2_EXTI_IRQHandler(void)
 {
-  HAL_GPIO_EXTI_IRQHandler(BUTTON_SW2_PIN);
+  //HAL_GPIO_EXTI_IRQHandler(BUTTON_SW2_PIN);
 }
 
 /**
@@ -328,7 +328,7 @@ void PUSH_BUTTON_SW2_EXTI_IRQHandler(void)
  */
 void PUSH_BUTTON_SW3_EXTI_IRQHandler(void)
 {
-  HAL_GPIO_EXTI_IRQHandler(BUTTON_SW3_PIN);
+  //HAL_GPIO_EXTI_IRQHandler(BUTTON_SW3_PIN);
 }
 
 /* USER CODE END 1 */
